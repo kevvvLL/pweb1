@@ -1,5 +1,15 @@
-
 import ThreejsCube from "./components/3dcube/3dcube";
+import SelectionOptions from "./components/SelectionOptions";
+
+
+
+
+
+
+
+
+
+
 
 export default function Home() {
   return (
@@ -8,12 +18,17 @@ export default function Home() {
         <h1 className="font-sans text-4xl font-bold text-white bg-gray-800 px-4 py-2 rounded inline-block mb-4">
           Soupeed
         </h1>
-        <div className="mt-2">
-          <ThreejsCube />
+        <div className="flex flex-row gap-8">
+          <div>
+            <SelectionOptions />
+          </div>
+          <div className="flex-grow">
+            <ThreejsCube />
+          </div>
         </div>
       </div>
       <footer className="w-full">
-        <p className="text-gray-600 text-right">soupeed.com</p>
+        <p className="text-gray-600 text-center">info@soupeed.com</p>
       </footer>
     </main>
   );

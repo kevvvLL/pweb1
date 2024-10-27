@@ -13,17 +13,17 @@ const ThreeJSLightPolyhedron: React.FC = () => {
         if (!mountRef.current) return;
 
         // 定义新的渲染尺寸（视口大小）
-        const width = window.innerWidth * 0.5;  // 使用窗口宽度的40%
+        const width = window.innerWidth *0.6;  // 使用窗口宽度的40%
         const height = window.innerHeight * 0.5;  // 使用窗口高度的40%
 
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000);
-        camera.position.z = 5;  // 将相机拉近
+        camera.position.z = 4;  // 将相机拉近
 
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(width, height);
 
-        const characters = [' ', '$', '.', 'X', '+', '#'];
+        const characters = [' ', '$', '.', '@', '+', '#'];
         const effect = new AsciiEffect(renderer, characters.join(''), { invert: false, resolution: 0.15 });
         effect.setSize(width, height);
         effect.domElement.style.color = 'black';
@@ -74,7 +74,7 @@ const ThreeJSLightPolyhedron: React.FC = () => {
 
         // 处理窗口大小变化
         const handleResize = () => {
-            const newWidth = window.innerWidth * 0.1;
+            const newWidth = window.innerWidth * 0.5;
             const newHeight = window.innerHeight * 0.4;
             camera.aspect = newWidth / newHeight;
             camera.updateProjectionMatrix();
@@ -91,8 +91,8 @@ const ThreeJSLightPolyhedron: React.FC = () => {
         <div 
             ref={mountRef} 
             style={{ 
-                width: '0%', 
-                height: '50vh', 
+                width: '66%', 
+                height: '60vh', 
                 backgroundColor: 'white', 
                 margin: 'auto',
                 display: 'flex',

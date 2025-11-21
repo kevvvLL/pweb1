@@ -13,8 +13,8 @@ const ThreeJSLightPolyhedron: React.FC = () => {
         if (!mountRef.current) return;
 
         // 定义新的渲染尺寸（视口大小）
-        const width = window.innerWidth *0.6;  // 使用窗口宽度的40%
-        const height = window.innerHeight * 0.5;  // 使用窗口高度的40%
+        const width = window.innerWidth * 0.6;  // 使用窗口宽度的60%
+        const height = window.innerHeight * 0.5;  // 使用窗口高度的50%
 
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000);
@@ -56,9 +56,10 @@ const ThreeJSLightPolyhedron: React.FC = () => {
         let bounceDirection = 0.1;
         const bounceSpeed = 0.03;
         const maxBounceHeight = 0.4;
+        let animationFrameId: number;
 
         const animate = () => {
-            requestAnimationFrame(animate);
+            animationFrameId = requestAnimationFrame(animate);
 
             edges.rotation.x += 0.003;
             edges.rotation.y += 0.003;
@@ -74,8 +75,8 @@ const ThreeJSLightPolyhedron: React.FC = () => {
 
         // 处理窗口大小变化
         const handleResize = () => {
-            const newWidth = window.innerWidth * 0.5;
-            const newHeight = window.innerHeight * 0.4;
+            const newWidth = window.innerWidth * 0.6;
+            const newHeight = window.innerHeight * 0.5;
             camera.aspect = newWidth / newHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(newWidth, newHeight);
@@ -84,7 +85,27 @@ const ThreeJSLightPolyhedron: React.FC = () => {
 
         window.addEventListener('resize', handleResize);
 
-       
+        // 清理函数：防止内存泄漏
+        return () => {
+            // 取消动画帧
+            cancelAnimationFrame(animationFrameId);
+            
+            // 移除事件监听器
+            window.removeEventListener('resize', handleResize);
+            
+            // 清理 Three.js 资源
+            scene.clear();
+            cubeGeometry.dispose();
+            triangleGeometry.dispose();
+            edgesGeometry.dispose();
+            material.dispose();
+            renderer.dispose();
+            
+            // 移除 DOM 元素
+            if (effect.domElement && effect.domElement.parentNode) {
+                effect.domElement.parentNode.removeChild(effect.domElement);
+            }
+        };
     }, []);
 
     return (

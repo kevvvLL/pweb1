@@ -1,0 +1,182 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+
+export default function EditPostPage({
+    params,
+}: {
+    params: Promise<{ slug: string }>;
+}) {
+    const [slug, setSlug] = useState('');
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
+    const [excerpt, setExcerpt] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
+    const [error, setError] = useState('');
+    const router = useRouter();
+
+    useEffect(() => {
+        params.then(p => {
+            setSlug(p.slug);
+            fetchPost(p.slug);
+        });
+    }, [params]);
+
+    const fetchPost = async (postSlug: string) => {
+        try {
+            const res = await fetch(`/api/blog?slug=${postSlug}`);
+            const data = await res.json();
+
+            if (res.ok) {
+                setTitle(data.title);
+                setContent(data.content);
+                setExcerpt(data.excerpt || '');
+            } else {
+                setError('Post not found');
+            }
+        } catch (err) {
+            setError('Failed to load post');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setError('');
+        setSaving(true);
+
+        try {
+            const res = await fetch('/api/blog', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ slug, title, content, excerpt }),
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                router.push('/blog/admin');
+            } else {
+                setError(data.error || 'Failed to update post');
+            }
+        } catch (err) {
+            setError('An error occurred');
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    if (loading) {
+        return (
+            <main className="min-h-screen p-6 md:p-12 bg-white">
+                <div className="max-w-4xl mx-auto">
+                    <p className="text-gray-400">加载中...</p>
+                </div>
+            </main>
+        );
+    }
+
+    if (error && !title) {
+        return (
+            <main className="min-h-screen p-6 md:p-12 bg-white">
+                <div className="max-w-4xl mx-auto">
+                    <p className="text-red-500">{error}</p>
+                    <Link href="/blog/admin" className="text-gray-600 hover:text-gray-900 mt-4 inline-block">
+                        ← 返回管理
+                    </Link>
+                </div>
+            </main>
+        );
+    }
+
+    return (
+        <main className="min-h-screen p-6 md:p-12 bg-white">
+            <div className="max-w-4xl mx-auto">
+                {/* Header */}
+                <div className="mb-12">
+                    <Link
+                        href="/blog/admin"
+                        className="inline-block mb-6 text-gray-400 hover:text-gray-600 transition-colors text-sm"
+                    >
+                        ← 返回管理
+                    </Link>
+
+                    <h1 className="text-4xl font-light text-gray-900">编辑文章</h1>
+                </div>
+
+                {/* Form */}
+                <form onSubmit={handleSubmit} className="space-y-8">
+                    {/* Title */}
+                    <div>
+                        <label className="block text-sm text-gray-500 mb-2">标题</label>
+                        <input
+                            type="text"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            className="w-full px-4 py-3 border-b border-gray-200 focus:border-gray-900 outline-none transition-colors bg-transparent text-gray-900 text-2xl font-light"
+                            placeholder="输入标题..."
+                            required
+                            disabled={saving}
+                        />
+                    </div>
+
+                    {/* Excerpt */}
+                    <div>
+                        <label className="block text-sm text-gray-500 mb-2">摘要（可选）</label>
+                        <input
+                            type="text"
+                            value={excerpt}
+                            onChange={(e) => setExcerpt(e.target.value)}
+                            className="w-full px-4 py-3 border-b border-gray-200 focus:border-gray-900 outline-none transition-colors bg-transparent text-gray-900"
+                            placeholder="简短描述..."
+                            disabled={saving}
+                        />
+                    </div>
+
+                    {/* Content */}
+                    <div>
+                        <label className="block text-sm text-gray-500 mb-2">内容（支持 Markdown）</label>
+                        <textarea
+                            value={content}
+                            onChange={(e) => setContent(e.target.value)}
+                            className="w-full px-4 py-3 border border-gray-200 focus:border-gray-900 outline-none transition-colors bg-transparent text-gray-900 font-mono text-sm leading-relaxed resize-none"
+                            placeholder="开始写作..."
+                            rows={20}
+                            required
+                            disabled={saving}
+                        />
+                        <p className="text-xs text-gray-400 mt-2">
+                            支持 Markdown 格式：# 标题, **粗体**, *斜体*, [链接](url), 等等
+                        </p>
+                    </div>
+
+                    {error && (
+                        <p className="text-red-500 text-sm">{error}</p>
+                    )}
+
+                    {/* Actions */}
+                    <div className="flex gap-4">
+                        <button
+                            type="submit"
+                            disabled={saving}
+                            className="px-8 py-3 bg-gray-900 text-white hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            {saving ? '保存中...' : '保存'}
+                        </button>
+
+                        <Link
+                            href="/blog/admin"
+                            className="px-8 py-3 border border-gray-300 text-gray-700 hover:border-gray-900 hover:text-gray-900 transition-colors inline-block text-center"
+                        >
+                            取消
+                        </Link>
+                    </div>
+                </form>
+            </div>
+        </main>
+    );
+}

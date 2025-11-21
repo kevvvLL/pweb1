@@ -3,7 +3,7 @@ import { getAllPosts } from '@/lib/blog-utils';
 import { isAuthenticated } from '@/lib/auth';
 
 export default async function BlogPage() {
-  const posts = getAllPosts();
+  const posts = await getAllPosts();
   const authenticated = await isAuthenticated();
 
   return (

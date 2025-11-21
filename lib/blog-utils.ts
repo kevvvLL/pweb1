@@ -1,8 +1,4 @@
-import fs from 'fs';
-import path from 'path';
-import matter from 'gray-matter';
-
-const postsDirectory = path.join(process.cwd(), 'content/blog');
+import { sql } from '@vercel/postgres';
 
 export interface BlogPost {
     slug: string;
@@ -21,87 +17,80 @@ export interface BlogPostMetadata {
     tags?: string[];
 }
 
-// Ensure blog directory exists
-function ensureBlogDirectory() {
-    if (!fs.existsSync(postsDirectory)) {
-        fs.mkdirSync(postsDirectory, { recursive: true });
+// Get all blog posts (sorted by date, newest first)
+export async function getAllPosts(): Promise<BlogPostMetadata[]> {
+    try {
+        const { rows } = await sql`
+            SELECT slug, title, date, excerpt, tags 
+            FROM posts 
+            ORDER BY date DESC
+        `;
+        return rows.map(row => ({
+            slug: row.slug,
+            title: row.title,
+            date: row.date,
+            excerpt: row.excerpt,
+            tags: row.tags || [],
+        }));
+    } catch (error) {
+        // If table doesn't exist or other error, return empty array
+        console.error('Database error:', error);
+        return [];
     }
 }
 
-// Get all blog posts (sorted by date, newest first)
-export function getAllPosts(): BlogPostMetadata[] {
-    ensureBlogDirectory();
-
-    const fileNames = fs.readdirSync(postsDirectory);
-    const allPostsData = fileNames
-        .filter(fileName => fileName.endsWith('.md'))
-        .map(fileName => {
-            const slug = fileName.replace(/\.md$/, '');
-            const fullPath = path.join(postsDirectory, fileName);
-            const fileContents = fs.readFileSync(fullPath, 'utf8');
-            const { data } = matter(fileContents);
-
-            return {
-                slug,
-                title: data.title || 'Untitled',
-                date: data.date || new Date().toISOString().split('T')[0],
-                excerpt: data.excerpt || '',
-                tags: data.tags || [],
-            };
-        });
-
-    // Sort posts by date (newest first)
-    return allPostsData.sort((a, b) => {
-        if (a.date < b.date) {
-            return 1;
-        } else {
-            return -1;
-        }
-    });
-}
-
 // Get single post by slug
-export function getPostBySlug(slug: string): BlogPost | null {
-    ensureBlogDirectory();
-
+export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
     try {
-        const fullPath = path.join(postsDirectory, `${slug}.md`);
-        const fileContents = fs.readFileSync(fullPath, 'utf8');
-        const { data, content } = matter(fileContents);
+        const { rows } = await sql`
+            SELECT * FROM posts WHERE slug = ${slug} LIMIT 1
+        `;
 
+        if (rows.length === 0) return null;
+
+        const row = rows[0];
         return {
-            slug,
-            title: data.title || 'Untitled',
-            date: data.date || new Date().toISOString().split('T')[0],
-            excerpt: data.excerpt || '',
-            content,
-            tags: data.tags || [],
+            slug: row.slug,
+            title: row.title,
+            date: row.date,
+            excerpt: row.excerpt,
+            content: row.content,
+            tags: row.tags || [],
         };
     } catch (error) {
+        console.error('Database error:', error);
         return null;
     }
 }
 
 // Create or update a post
-export function savePost(slug: string, post: Omit<BlogPost, 'slug'>): void {
-    ensureBlogDirectory();
+export async function savePost(slug: string, post: Omit<BlogPost, 'slug'>): Promise<void> {
+    const { title, date, excerpt, content, tags } = post;
 
-    const { content, ...metadata } = post;
-    const fileContent = matter.stringify(content, metadata);
-    const fullPath = path.join(postsDirectory, `${slug}.md`);
+    // Check if post exists
+    const existing = await getPostBySlug(slug);
 
-    fs.writeFileSync(fullPath, fileContent, 'utf8');
+    if (existing) {
+        await sql`
+            UPDATE posts 
+            SET title = ${title}, date = ${date}, excerpt = ${excerpt}, content = ${content}, tags = ${tags as any}
+            WHERE slug = ${slug}
+        `;
+    } else {
+        await sql`
+            INSERT INTO posts (slug, title, date, excerpt, content, tags)
+            VALUES (${slug}, ${title}, ${date}, ${excerpt}, ${content}, ${tags as any})
+        `;
+    }
 }
 
 // Delete a post
-export function deletePost(slug: string): boolean {
-    ensureBlogDirectory();
-
+export async function deletePost(slug: string): Promise<boolean> {
     try {
-        const fullPath = path.join(postsDirectory, `${slug}.md`);
-        fs.unlinkSync(fullPath);
-        return true;
+        const result = await sql`DELETE FROM posts WHERE slug = ${slug}`;
+        return (result.rowCount ?? 0) > 0;
     } catch (error) {
+        console.error('Database error:', error);
         return false;
     }
 }

@@ -8,14 +8,14 @@ export async function GET(request: NextRequest) {
     const slug = searchParams.get('slug');
 
     if (slug) {
-        const post = getPostBySlug(slug);
+        const post = await getPostBySlug(slug);
         if (!post) {
             return NextResponse.json({ error: 'Post not found' }, { status: 404 });
         }
         return NextResponse.json(post);
     }
 
-    const posts = getAllPosts();
+    const posts = await getAllPosts();
     return NextResponse.json(posts);
 }
 
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
         const slug = generateSlug(title);
         const date = new Date().toISOString().split('T')[0];
 
-        savePost(slug, {
+        await savePost(slug, {
             title,
             content,
             excerpt: excerpt || content.substring(0, 150) + '...',
@@ -76,7 +76,7 @@ export async function PUT(request: NextRequest) {
 
         const date = new Date().toISOString().split('T')[0];
 
-        savePost(slug, {
+        await savePost(slug, {
             title,
             content,
             excerpt: excerpt || content.substring(0, 150) + '...',
@@ -112,7 +112,7 @@ export async function DELETE(request: NextRequest) {
             );
         }
 
-        const success = deletePost(slug);
+        const success = await deletePost(slug);
 
         if (!success) {
             return NextResponse.json({ error: 'Post not found' }, { status: 404 });

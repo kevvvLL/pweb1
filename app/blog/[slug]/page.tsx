@@ -4,20 +4,13 @@ import { isAuthenticated } from '@/lib/auth';
 import { notFound } from 'next/navigation';
 import ReactMarkdown from 'react-markdown';
 
-export async function generateStaticParams() {
-    const posts = getAllPosts();
-    return posts.map((post) => ({
-        slug: post.slug,
-    }));
-}
-
 export default async function BlogPostPage({
     params,
 }: {
     params: Promise<{ slug: string }>;
 }) {
     const { slug } = await params;
-    const post = getPostBySlug(slug);
+    const post = await getPostBySlug(slug);
     const authenticated = await isAuthenticated();
 
     if (!post) {

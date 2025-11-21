@@ -1,4 +1,4 @@
-import { sql } from '@vercel/postgres';
+import { list, put, del } from '@vercel/blob';
 
 export interface BlogPost {
     slug: string;
@@ -20,21 +20,31 @@ export interface BlogPostMetadata {
 // Get all blog posts (sorted by date, newest first)
 export async function getAllPosts(): Promise<BlogPostMetadata[]> {
     try {
-        const { rows } = await sql`
-            SELECT slug, title, date, excerpt, tags 
-            FROM posts 
-            ORDER BY date DESC
-        `;
-        return rows.map(row => ({
-            slug: row.slug,
-            title: row.title,
-            date: row.date,
-            excerpt: row.excerpt,
-            tags: row.tags || [],
-        }));
+        // List all blobs in the 'posts/' prefix
+        const { blobs } = await list({ prefix: 'posts/' });
+
+        // Fetch all posts in parallel
+        const posts = await Promise.all(
+            blobs.map(async (blob) => {
+                const res = await fetch(blob.url);
+                const post = await res.json();
+                return {
+                    slug: post.slug,
+                    title: post.title,
+                    date: post.date,
+                    excerpt: post.excerpt,
+                    tags: post.tags || [],
+                };
+            })
+        );
+
+        // Sort posts by date (newest first)
+        return posts.sort((a, b) => {
+            if (a.date < b.date) return 1;
+            return -1;
+        });
     } catch (error) {
-        // If table doesn't exist or other error, return empty array
-        console.error('Database error:', error);
+        console.error('Blob error:', error);
         return [];
     }
 }
@@ -42,55 +52,45 @@ export async function getAllPosts(): Promise<BlogPostMetadata[]> {
 // Get single post by slug
 export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
     try {
-        const { rows } = await sql`
-            SELECT * FROM posts WHERE slug = ${slug} LIMIT 1
-        `;
+        const { blobs } = await list({ prefix: `posts/${slug}.json` });
 
-        if (rows.length === 0) return null;
+        if (blobs.length === 0) return null;
 
-        const row = rows[0];
-        return {
-            slug: row.slug,
-            title: row.title,
-            date: row.date,
-            excerpt: row.excerpt,
-            content: row.content,
-            tags: row.tags || [],
-        };
+        // There should only be one match, but let's be safe
+        const blobUrl = blobs[0].url;
+        const res = await fetch(blobUrl);
+        const post = await res.json();
+
+        return post;
     } catch (error) {
-        console.error('Database error:', error);
+        console.error('Blob error:', error);
         return null;
     }
 }
 
 // Create or update a post
 export async function savePost(slug: string, post: Omit<BlogPost, 'slug'>): Promise<void> {
-    const { title, date, excerpt, content, tags } = post;
+    const postData = { slug, ...post };
 
-    // Check if post exists
-    const existing = await getPostBySlug(slug);
-
-    if (existing) {
-        await sql`
-            UPDATE posts 
-            SET title = ${title}, date = ${date}, excerpt = ${excerpt}, content = ${content}, tags = ${tags as any}
-            WHERE slug = ${slug}
-        `;
-    } else {
-        await sql`
-            INSERT INTO posts (slug, title, date, excerpt, content, tags)
-            VALUES (${slug}, ${title}, ${date}, ${excerpt}, ${content}, ${tags as any})
-        `;
-    }
+    // Save as JSON file
+    await put(`posts/${slug}.json`, JSON.stringify(postData), {
+        access: 'public',
+        addRandomSuffix: false, // Overwrite existing file
+    });
 }
 
 // Delete a post
 export async function deletePost(slug: string): Promise<boolean> {
     try {
-        const result = await sql`DELETE FROM posts WHERE slug = ${slug}`;
-        return (result.rowCount ?? 0) > 0;
+        // Find the blob URL first
+        const { blobs } = await list({ prefix: `posts/${slug}.json` });
+
+        if (blobs.length === 0) return false;
+
+        await del(blobs[0].url);
+        return true;
     } catch (error) {
-        console.error('Database error:', error);
+        console.error('Blob error:', error);
         return false;
     }
 }

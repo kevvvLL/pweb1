@@ -2,19 +2,28 @@ import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 import bcrypt from 'bcryptjs';
 
-console.log('[AUTH] Verifying password...');
-console.log('[AUTH] Password hash exists:', !!ADMIN_PASSWORD_HASH);
-console.log('[AUTH] Password hash length:', ADMIN_PASSWORD_HASH?.length || 0);
+const ADMIN_PASSWORD_HASH = process.env.ADMIN_PASSWORD_HASH;
+const SECRET_KEY = new TextEncoder().encode(process.env.SESSION_SECRET || 'default_secret_key');
 
-if (!ADMIN_PASSWORD_HASH) {
-    console.error('[AUTH] ADMIN_PASSWORD_HASH not set in environment variables');
-    return false;
+export interface SessionData {
+    isAuthenticated: boolean;
+    expiresAt: number;
 }
 
-const result = await bcrypt.compare(password, ADMIN_PASSWORD_HASH);
-console.log('[AUTH] Password verification result:', result);
+export async function verifyPassword(password: string): Promise<boolean> {
+    console.log('[AUTH] Verifying password...');
+    console.log('[AUTH] Password hash exists:', !!ADMIN_PASSWORD_HASH);
+    console.log('[AUTH] Password hash length:', ADMIN_PASSWORD_HASH?.length || 0);
 
-return result;
+    if (!ADMIN_PASSWORD_HASH) {
+        console.error('[AUTH] ADMIN_PASSWORD_HASH not set in environment variables');
+        return false;
+    }
+
+    const result = await bcrypt.compare(password, ADMIN_PASSWORD_HASH);
+    console.log('[AUTH] Password verification result:', result);
+
+    return result;
 }
 
 // Create session token
@@ -26,7 +35,7 @@ export async function createSession(): Promise<string> {
         expiresAt: expiresAt.getTime(),
     };
 
-    const token = await new SignJWT(session)
+    const token = await new SignJWT(session as any)
         .setProtectedHeader({ alg: 'HS256' })
         .setExpirationTime(expiresAt)
         .sign(SECRET_KEY);
@@ -38,7 +47,7 @@ export async function createSession(): Promise<string> {
 export async function verifySession(token: string): Promise<SessionData | null> {
     try {
         const verified = await jwtVerify(token, SECRET_KEY);
-        return verified.payload as SessionData;
+        return verified.payload as unknown as SessionData;
     } catch (error) {
         return null;
     }

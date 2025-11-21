@@ -2,33 +2,19 @@ import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 import bcrypt from 'bcryptjs';
 
-const SECRET_KEY = new TextEncoder().encode(
-    process.env.SESSION_SECRET || 'your-secret-key-change-this-in-production'
-);
+console.log('[AUTH] Verifying password...');
+console.log('[AUTH] Password hash exists:', !!ADMIN_PASSWORD_HASH);
+console.log('[AUTH] Password hash length:', ADMIN_PASSWORD_HASH?.length || 0);
 
-export interface SessionData {
-    isAuthenticated: boolean;
-    expiresAt: number;
+if (!ADMIN_PASSWORD_HASH) {
+    console.error('[AUTH] ADMIN_PASSWORD_HASH not set in environment variables');
+    return false;
 }
 
-// Verify password
-export async function verifyPassword(password: string): Promise<boolean> {
-    // Read env variable at runtime, not at module load time
-    const ADMIN_PASSWORD_HASH = process.env.ADMIN_PASSWORD_HASH;
+const result = await bcrypt.compare(password, ADMIN_PASSWORD_HASH);
+console.log('[AUTH] Password verification result:', result);
 
-    console.log('[AUTH] Verifying password...');
-    console.log('[AUTH] Password hash exists:', !!ADMIN_PASSWORD_HASH);
-    console.log('[AUTH] Password hash length:', ADMIN_PASSWORD_HASH?.length || 0);
-
-    if (!ADMIN_PASSWORD_HASH) {
-        console.error('[AUTH] ADMIN_PASSWORD_HASH not set in environment variables');
-        return false;
-    }
-
-    const result = await bcrypt.compare(password, ADMIN_PASSWORD_HASH);
-    console.log('[AUTH] Password verification result:', result);
-
-    return result;
+return result;
 }
 
 // Create session token

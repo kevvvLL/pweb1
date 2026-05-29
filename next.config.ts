@@ -1,13 +1,13 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  output: 'standalone',
-  outputFileTracingExcludes: {
-    '*': [
-      'node_modules/@swc/core-linux-x64-gnu',
-      'node_modules/@swc/core-linux-x64-musl',
-      'node_modules/@esbuild/linux-x64',
-    ],
-  },
+import type { NextConfig } from 'next';
+
+const nextConfig: NextConfig = {
+    // OpenNext handles the build output for Cloudflare Workers automatically.
+    // (No need for `output: 'standalone'` here — the adapter sets it internally.)
 };
 
-module.exports = nextConfig;
+export default nextConfig;
+
+// Enable calling `getCloudflareContext()` during `next dev`
+// so KV / env bindings work locally.
+import { initOpenNextCloudflareForDev } from '@opennextjs/cloudflare';
+initOpenNextCloudflareForDev();

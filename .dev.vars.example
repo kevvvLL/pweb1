@@ -1,0 +1,4 @@
+# Copy this file to `.dev.vars` for local development (`npm run preview`).
+# These are read as environment variables at runtime on Cloudflare.
+ADMIN_PASSWORD_HASH=$2b$10$HgsKUpF/9fjTC6rCJi6/JOhWA0e5abKZQ2hJm7ceHAOIUxgm889cq
+SESSION_SECRET=replace_with_a_long_random_string

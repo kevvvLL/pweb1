@@ -1,4 +1,4 @@
-import { list, put, del } from '@vercel/blob';
+import { getCloudflareContext } from '@opennextjs/cloudflare';
 
 export interface BlogPost {
     slug: string;
@@ -17,17 +17,27 @@ export interface BlogPostMetadata {
     tags?: string[];
 }
 
+const PREFIX = 'posts/';
+
+// Get the KV namespace bound as BLOG_KV (configured in wrangler.jsonc)
+function getKV() {
+    const { env } = getCloudflareContext();
+    if (!env.BLOG_KV) {
+        throw new Error('BLOG_KV binding not found. Did you configure it in wrangler.jsonc?');
+    }
+    return env.BLOG_KV;
+}
+
 // Get all blog posts (sorted by date, newest first)
 export async function getAllPosts(): Promise<BlogPostMetadata[]> {
     try {
-        // List all blobs in the 'posts/' prefix
-        const { blobs } = await list({ prefix: 'posts/' });
+        const kv = getKV();
+        const { keys } = await kv.list({ prefix: PREFIX });
 
-        // Fetch all posts in parallel
         const posts = await Promise.all(
-            blobs.map(async (blob) => {
-                const res = await fetch(blob.url);
-                const post = await res.json();
+            keys.map(async ({ name }: { name: string }) => {
+                const post = (await kv.get(name, 'json')) as BlogPost | null;
+                if (!post) return null;
                 return {
                     slug: post.slug,
                     title: post.title,
@@ -38,13 +48,12 @@ export async function getAllPosts(): Promise<BlogPostMetadata[]> {
             })
         );
 
-        // Sort posts by date (newest first)
-        return posts.sort((a, b) => {
+        return (posts.filter(Boolean) as BlogPostMetadata[]).sort((a, b) => {
             if (a.date < b.date) return 1;
             return -1;
         });
     } catch (error) {
-        console.error('Blob error:', error);
+        console.error('KV error:', error);
         return [];
     }
 }
@@ -52,45 +61,32 @@ export async function getAllPosts(): Promise<BlogPostMetadata[]> {
 // Get single post by slug
 export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
     try {
-        const { blobs } = await list({ prefix: `posts/${slug}.json` });
-
-        if (blobs.length === 0) return null;
-
-        // There should only be one match, but let's be safe
-        const blobUrl = blobs[0].url;
-        const res = await fetch(blobUrl);
-        const post = await res.json();
-
+        const kv = getKV();
+        const post = (await kv.get(`${PREFIX}${slug}`, 'json')) as BlogPost | null;
         return post;
     } catch (error) {
-        console.error('Blob error:', error);
+        console.error('KV error:', error);
         return null;
     }
 }
 
 // Create or update a post
 export async function savePost(slug: string, post: Omit<BlogPost, 'slug'>): Promise<void> {
+    const kv = getKV();
     const postData = { slug, ...post };
-
-    // Save as JSON file
-    await put(`posts/${slug}.json`, JSON.stringify(postData), {
-        access: 'public',
-        addRandomSuffix: false, // Overwrite existing file
-    });
+    await kv.put(`${PREFIX}${slug}`, JSON.stringify(postData));
 }
 
 // Delete a post
 export async function deletePost(slug: string): Promise<boolean> {
     try {
-        // Find the blob URL first
-        const { blobs } = await list({ prefix: `posts/${slug}.json` });
-
-        if (blobs.length === 0) return false;
-
-        await del(blobs[0].url);
+        const kv = getKV();
+        const existing = await kv.get(`${PREFIX}${slug}`);
+        if (existing === null) return false;
+        await kv.delete(`${PREFIX}${slug}`);
         return true;
     } catch (error) {
-        console.error('Blob error:', error);
+        console.error('KV error:', error);
         return false;
     }
 }

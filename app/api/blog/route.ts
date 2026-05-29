@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { NextRequest, NextResponse } from 'next/server';
 import { isAuthenticated } from '@/lib/auth';
 import { getAllPosts, getPostBySlug, savePost, deletePost, generateSlug } from '@/lib/blog-utils';

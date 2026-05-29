@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import Link from 'next/link';
 import { getPostBySlug, getAllPosts } from '@/lib/blog-utils';
 import { isAuthenticated } from '@/lib/auth';

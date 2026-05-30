@@ -22,13 +22,12 @@ export default async function BlogPostPage({
     return (
         <main className="min-h-screen p-6 md:p-12 bg-white">
             <article className="max-w-3xl mx-auto">
-                {/* Navigation */}
                 <div className="mb-12 flex items-center justify-between">
                     <Link
                         href="/blog"
                         className="text-gray-400 hover:text-gray-600 transition-colors text-sm"
                     >
-                        ← 返回博客
+                        ← Back to Blog
                     </Link>
 
                     {authenticated && (
@@ -36,15 +35,14 @@ export default async function BlogPostPage({
                             href={`/blog/admin/edit/${slug}`}
                             className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
                         >
-                            编辑
+                            Edit
                         </Link>
                     )}
                 </div>
 
-                {/* Post Header */}
                 <header className="mb-12 space-y-4">
                     <time className="text-sm text-gray-400 font-light">
-                        {new Date(post.date).toLocaleDateString('zh-CN', {
+                        {new Date(post.date).toLocaleDateString('en-US', {
                             year: 'numeric',
                             month: 'long',
                             day: 'numeric'
@@ -56,7 +54,6 @@ export default async function BlogPostPage({
                     </h1>
                 </header>
 
-                {/* Post Content */}
                 <div className="prose prose-lg prose-gray max-w-none">
                     <ReactMarkdown
                         components={{

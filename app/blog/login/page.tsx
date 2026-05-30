@@ -43,13 +43,13 @@ export default function LoginPage() {
                     href="/blog"
                     className="inline-block mb-8 text-gray-400 hover:text-gray-600 transition-colors"
                 >
-                    ← 返回博客
+                    ← Back to Blog
                 </Link>
 
                 <div className="space-y-8">
                     <div>
-                        <h1 className="text-3xl font-light text-gray-900 mb-2">登录</h1>
-                        <p className="text-gray-500 text-sm">管理员访问</p>
+                        <h1 className="text-3xl font-light text-gray-900 mb-2">Login</h1>
+                        <p className="text-gray-500 text-sm">Admin access</p>
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-6">
@@ -58,7 +58,7 @@ export default function LoginPage() {
                                 type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                placeholder="密码"
+                                placeholder="Password"
                                 className="w-full px-4 py-3 border-b border-gray-200 focus:border-gray-900 outline-none transition-colors bg-transparent text-gray-900 placeholder-gray-400"
                                 required
                                 disabled={loading}
@@ -74,7 +74,7 @@ export default function LoginPage() {
                             disabled={loading}
                             className="w-full py-3 bg-gray-900 text-white hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            {loading ? '登录中...' : '登录'}
+                            {loading ? 'Logging in...' : 'Login'}
                         </button>
                     </form>
                 </div>

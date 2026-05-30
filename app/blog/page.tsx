@@ -11,39 +11,37 @@ export default async function BlogPage() {
   return (
     <main className="min-h-screen p-6 md:p-12 bg-white">
       <div className="max-w-3xl mx-auto">
-        {/* Header */}
         <div className="mb-12">
           <Link
             href="/"
             className="inline-block mb-6 text-gray-400 hover:text-gray-600 transition-colors text-sm"
           >
-            ← 返回首页
+            ← Back to Home
           </Link>
 
           <div className="flex items-center justify-between">
-            <h1 className="text-4xl md:text-5xl font-light text-gray-900">博客</h1>
+            <h1 className="text-4xl md:text-5xl font-light text-gray-900">Blog</h1>
 
             {authenticated && (
               <Link
                 href="/blog/admin"
                 className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
               >
-                管理
+                Admin
               </Link>
             )}
           </div>
         </div>
 
-        {/* Posts List */}
         {posts.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-gray-400 text-lg">还没有文章</p>
+            <p className="text-gray-400 text-lg">No posts yet</p>
             {authenticated && (
               <Link
                 href="/blog/admin/new"
                 className="inline-block mt-4 text-gray-600 hover:text-gray-900 transition-colors"
               >
-                写第一篇 →
+                Write the first post →
               </Link>
             )}
           </div>
@@ -54,7 +52,7 @@ export default async function BlogPage() {
                 <Link href={`/blog/${post.slug}`}>
                   <div className="space-y-2">
                     <time className="text-sm text-gray-400 font-light">
-                      {new Date(post.date).toLocaleDateString('zh-CN', {
+                      {new Date(post.date).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'long',
                         day: 'numeric'

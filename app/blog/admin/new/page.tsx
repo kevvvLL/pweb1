@@ -41,61 +41,56 @@ export default function NewPostPage() {
     return (
         <main className="min-h-screen p-6 md:p-12 bg-white">
             <div className="max-w-4xl mx-auto">
-                {/* Header */}
                 <div className="mb-12">
                     <Link
                         href="/blog/admin"
                         className="inline-block mb-6 text-gray-400 hover:text-gray-600 transition-colors text-sm"
                     >
-                        ← 返回管理
+                        ← Back to Admin
                     </Link>
 
-                    <h1 className="text-4xl font-light text-gray-900">新文章</h1>
+                    <h1 className="text-4xl font-light text-gray-900">New Post</h1>
                 </div>
 
-                {/* Form */}
                 <form onSubmit={handleSubmit} className="space-y-8">
-                    {/* Title */}
                     <div>
-                        <label className="block text-sm text-gray-500 mb-2">标题</label>
+                        <label className="block text-sm text-gray-500 mb-2">Title</label>
                         <input
                             type="text"
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
                             className="w-full px-4 py-3 border-b border-gray-200 focus:border-gray-900 outline-none transition-colors bg-transparent text-gray-900 text-2xl font-light"
-                            placeholder="输入标题..."
+                            placeholder="Enter title..."
                             required
                             disabled={loading}
                         />
                     </div>
 
-                    {/* Excerpt */}
                     <div>
-                        <label className="block text-sm text-gray-500 mb-2">摘要（可选）</label>
+                        <label className="block text-sm text-gray-500 mb-2">Excerpt (optional)</label>
                         <input
                             type="text"
                             value={excerpt}
                             onChange={(e) => setExcerpt(e.target.value)}
                             className="w-full px-4 py-3 border-b border-gray-200 focus:border-gray-900 outline-none transition-colors bg-transparent text-gray-900"
-                            placeholder="简短描述..."
+                            placeholder="Short description..."
                             disabled={loading}
                         />
                     </div>
 
-                    {/* Content */}
                     <div>
-                        <label className="block text-sm text-gray-500 mb-2">内容（支持 Markdown）</label>
+                        <label className="block text-sm text-gray-500 mb-2">Content (Markdown supported)</label>
                         <textarea
                             value={content}
                             onChange={(e) => setContent(e.target.value)}
                             className="w-full px-4 py-3 border border-gray-200 focus:border-gray-900 outline-none transition-colors bg-transparent text-gray-900 font-mono text-sm leading-relaxed resize-none"
-                            placeholder="开始写作..."
+                            placeholder="Start writing..."
                             rows={20}
                             required
                             disabled={loading}
                         />
                         <p className="text-xs text-gray-400 mt-2">
-                            支持 Markdown 格式：# 标题, **粗体**, *斜体*, [链接](url), 等等
+                            Markdown supported: # Heading, **bold**, *italic*, [link](url), etc.
                         </p>
                     </div>
 
@@ -103,21 +98,20 @@ export default function NewPostPage() {
                         <p className="text-red-500 text-sm">{error}</p>
                     )}
 
-                    {/* Actions */}
                     <div className="flex gap-4">
                         <button
                             type="submit"
                             disabled={loading}
                             className="px-8 py-3 bg-gray-900 text-white hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            {loading ? '发布中...' : '发布'}
+                            {loading ? 'Publishing...' : 'Publish'}
                         </button>
 
                         <Link
                             href="/blog/admin"
                             className="px-8 py-3 border border-gray-300 text-gray-700 hover:border-gray-900 hover:text-gray-900 transition-colors inline-block text-center"
                         >
-                            取消
+                            Cancel
                         </Link>
                     </div>
                 </form>

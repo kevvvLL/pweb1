@@ -38,7 +38,7 @@ export default function AdminPage() {
     };
 
     const handleDelete = async (slug: string) => {
-        if (!confirm('确定要删除这篇文章吗？')) return;
+        if (!confirm('Are you sure you want to delete this post?')) return;
 
         try {
             const res = await fetch(`/api/blog?slug=${slug}`, { method: 'DELETE' });
@@ -53,47 +53,45 @@ export default function AdminPage() {
     return (
         <main className="min-h-screen p-6 md:p-12 bg-white">
             <div className="max-w-4xl mx-auto">
-                {/* Header */}
                 <div className="mb-12">
                     <div className="flex items-center justify-between mb-6">
                         <Link
                             href="/blog"
                             className="text-gray-400 hover:text-gray-600 transition-colors text-sm"
                         >
-                            ← 返回博客
+                            ← Back to Blog
                         </Link>
 
                         <button
                             onClick={handleLogout}
                             className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
                         >
-                            登出
+                            Logout
                         </button>
                     </div>
 
                     <div className="flex items-center justify-between">
-                        <h1 className="text-4xl font-light text-gray-900">管理</h1>
+                        <h1 className="text-4xl font-light text-gray-900">Admin</h1>
 
                         <Link
                             href="/blog/admin/new"
                             className="px-6 py-2 bg-gray-900 text-white hover:bg-gray-700 transition-colors text-sm"
                         >
-                            新文章
+                            New Post
                         </Link>
                     </div>
                 </div>
 
-                {/* Posts List */}
                 {loading ? (
-                    <p className="text-gray-400">加载中...</p>
+                    <p className="text-gray-400">Loading...</p>
                 ) : posts.length === 0 ? (
                     <div className="text-center py-20">
-                        <p className="text-gray-400 mb-4">还没有文章</p>
+                        <p className="text-gray-400 mb-4">No posts yet</p>
                         <Link
                             href="/blog/admin/new"
                             className="text-gray-600 hover:text-gray-900 transition-colors"
                         >
-                            创建第一篇 →
+                            Create the first one →
                         </Link>
                     </div>
                 ) : (
@@ -109,7 +107,7 @@ export default function AdminPage() {
                                             {post.title}
                                         </h3>
                                         <p className="text-sm text-gray-400 mt-1">
-                                            {new Date(post.date).toLocaleDateString('zh-CN')}
+                                            {new Date(post.date).toLocaleDateString('en-US')}
                                         </p>
                                     </Link>
                                 </div>
@@ -119,13 +117,13 @@ export default function AdminPage() {
                                         href={`/blog/admin/edit/${post.slug}`}
                                         className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
                                     >
-                                        编辑
+                                        Edit
                                     </Link>
                                     <button
                                         onClick={() => handleDelete(post.slug)}
                                         className="text-sm text-red-400 hover:text-red-600 transition-colors"
                                     >
-                                        删除
+                                        Delete
                                     </button>
                                 </div>
                             </div>

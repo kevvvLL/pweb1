@@ -16,13 +16,25 @@ export default function ProjectPage() {
               </Link>
             </h2>
             <p className="text-gray-600 mb-3">
-              一个简单的网页相机应用，支持拍照、添加文字标注和保存功能。
+              A simple web camera app with photo capture, text annotation, and local saving.
             </p>
-            <Link
-              href="/project/camera"
-              className="text-gray-800 hover:text-gray-600 font-medium"
-            >
-              了解更多 →
+            <Link href="/project/camera" className="text-gray-800 hover:text-gray-600 font-medium">
+              Learn more →
+            </Link>
+          </div>
+
+          <div className="border border-gray-300 rounded-lg p-6 hover:shadow-lg transition-shadow">
+            <h2 className="text-2xl font-semibold mb-2">
+              <Link href="/project/bridge-inspection" className="text-gray-800 hover:text-gray-600">
+                Bridge Inspection Pipeline
+              </Link>
+            </h2>
+            <p className="text-gray-600 mb-3">
+              A Python pipeline that converts element-organized bridge inspection PDFs into
+              station-organized field reports — one page per walking stop, ready for on-site use.
+            </p>
+            <Link href="/project/bridge-inspection" className="text-gray-800 hover:text-gray-600 font-medium">
+              Learn more →
             </Link>
           </div>
         </div>

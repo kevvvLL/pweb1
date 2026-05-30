@@ -8,38 +8,38 @@ export default function CameraProjectPage() {
 
                 <div className="space-y-6">
                     <section>
-                        <h2 className="text-2xl font-semibold mb-3">关于这个项目</h2>
+                        <h2 className="text-2xl font-semibold mb-3">About</h2>
                         <p className="text-gray-700 leading-relaxed">
-                            Camera 是一个简单而强大的网页相机应用。它允许你直接在浏览器中拍照、添加文字标注，并保存到本地设备。
-                            无需安装任何软件，完全基于浏览器运行。
+                            Camera is a simple yet powerful web camera app. It lets you take photos directly in the browser,
+                            add text annotations, and save them to your device — no installation required.
                         </p>
                     </section>
 
                     <section>
-                        <h2 className="text-2xl font-semibold mb-3">主要功能</h2>
+                        <h2 className="text-2xl font-semibold mb-3">Features</h2>
                         <ul className="list-disc list-inside space-y-2 text-gray-700">
-                            <li>📷 实时相机预览</li>
-                            <li>✏️ 添加文字标注到照片</li>
-                            <li>💾 保存带标注的照片到本地</li>
-                            <li>🔄 重新拍摄功能</li>
-                            <li>🎨 简洁直观的用户界面</li>
+                            <li>📷 Live camera preview</li>
+                            <li>✏️ Add text annotations to photos</li>
+                            <li>💾 Save annotated photos to your device</li>
+                            <li>🔄 Retake photos easily</li>
+                            <li>🎨 Clean and intuitive interface</li>
                         </ul>
                     </section>
 
                     <section>
-                        <h2 className="text-2xl font-semibold mb-3">技术特点</h2>
+                        <h2 className="text-2xl font-semibold mb-3">Technical Details</h2>
                         <ul className="list-disc list-inside space-y-2 text-gray-700">
-                            <li>纯前端实现，无需后端服务器</li>
-                            <li>使用 HTML5 Canvas API 进行图像处理</li>
-                            <li>响应式设计，支持移动设备</li>
-                            <li>隐私保护：所有处理都在本地完成</li>
+                            <li>Pure frontend — no backend server needed</li>
+                            <li>Image processing via HTML5 Canvas API</li>
+                            <li>Responsive design, mobile-friendly</li>
+                            <li>Privacy-first: all processing done locally</li>
                         </ul>
                     </section>
 
                     <section className="mt-8">
-                        <h2 className="text-2xl font-semibold mb-3">访问应用</h2>
+                        <h2 className="text-2xl font-semibold mb-3">Try it out</h2>
                         <p className="text-gray-700 mb-4">
-                            点击下面的链接访问 Camera 应用：
+                            Click the link below to open the Camera app:
                         </p>
                         <a
                             href="http://cam.soupeed.com"
@@ -47,7 +47,7 @@ export default function CameraProjectPage() {
                             rel="noopener noreferrer"
                             className="inline-block bg-gray-800 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors duration-200 font-medium"
                         >
-                            打开 Camera App →
+                            Open Camera App →
                         </a>
                     </section>
 
@@ -56,7 +56,7 @@ export default function CameraProjectPage() {
                             href="/project"
                             className="text-gray-600 hover:text-gray-800 transition-colors"
                         >
-                            ← 返回项目列表
+                            ← Back to Projects
                         </a>
                     </section>
                 </div>

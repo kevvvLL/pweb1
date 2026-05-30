@@ -1,23 +1,30 @@
 {
-    "$schema": "node_modules/wrangler/config-schema.json",
-    "name": "pweb1",
-    "main": ".open-next/worker.js",
-    "compatibility_date": "2025-03-25",
-    "compatibility_flags": ["nodejs_compat"],
-    "assets": {
-        "binding": "ASSETS",
-        "directory": ".open-next/assets"
-    },
-    "observability": {
-        "enabled": true
-    },
-    // KV namespace for blog posts. Create it with:
-    //   npx wrangler kv namespace create BLOG_KV
-    // then paste the returned id below.
-    "kv_namespaces": [
-        {
-            "binding": "BLOG_KV",
-            "id": "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
-        }
-    ]
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "pweb1",
+	"main": ".open-next/worker.js",
+	"compatibility_date": "2025-03-25",
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
+	"assets": {
+		"binding": "ASSETS",
+		"directory": ".open-next/assets"
+	},
+	"observability": {
+		"enabled": true
+	},
+	// KV namespace for blog posts. Create it with:
+	//   npx wrangler kv namespace create BLOG_KV
+	// then paste the returned id below.
+	"kv_namespaces": [
+		{
+			"binding": "BLOG_KV",
+			"id": "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+		},
+		{
+			"binding": "BLOG_KV",
+			"id": "55587cfb17ff4f89ad33ed077988af7c",
+			"remote": true
+		}
+	]
 }

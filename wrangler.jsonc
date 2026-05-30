@@ -17,10 +17,7 @@
 	//   npx wrangler kv namespace create BLOG_KV
 	// then paste the returned id below.
 	"kv_namespaces": [
-		{
-			"binding": "BLOG_KV",
-			"id": "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
-		},
+		
 		{
 			"binding": "BLOG_KV",
 			"id": "55587cfb17ff4f89ad33ed077988af7c",

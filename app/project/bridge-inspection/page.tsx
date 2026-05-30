@@ -21,7 +21,7 @@ export default function BridgeInspectionPage() {
                         <h2 className="text-2xl font-semibold mb-3">The Problem It Solves</h2>
                         <p className="text-gray-700 leading-relaxed">
                             The default element-organized format is great for reporting but terrible for
-                            field inspection. Standing at Pier 2, an inspector shouldn't have to flip
+                            field inspection. Standing at Pier 2, an inspector shouldn&apos;t have to flip
                             between four separate element sections to see everything about it. This tool
                             inverts the organization — same data, different axis.
                         </p>

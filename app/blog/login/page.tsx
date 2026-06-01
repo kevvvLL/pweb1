@@ -37,19 +37,19 @@ export default function LoginPage() {
     };
 
     return (
-        <main className="min-h-screen flex items-center justify-center p-6 bg-white">
-            <div className="w-full max-w-md">
+        <main className="min-h-screen flex items-center justify-center px-6 bg-white">
+            <div className="w-full max-w-sm">
                 <Link
                     href="/blog"
-                    className="inline-block mb-8 text-gray-400 hover:text-gray-600 transition-colors"
+                    className="inline-block mb-12 text-sm text-[#6b7280] hover:text-[#0a0a0a] transition-colors"
                 >
-                    ← Back to Blog
+                    ← Back
                 </Link>
 
-                <div className="space-y-8">
+                <div className="space-y-10">
                     <div>
-                        <h1 className="text-3xl font-light text-gray-900 mb-2">Login</h1>
-                        <p className="text-gray-500 text-sm">Admin access</p>
+                        <h1 className="text-3xl font-semibold text-[#0a0a0a] mb-1">Login</h1>
+                        <p className="text-sm text-[#6b7280]">Admin access</p>
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-6">
@@ -59,7 +59,7 @@ export default function LoginPage() {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="Password"
-                                className="w-full px-4 py-3 border-b border-gray-200 focus:border-gray-900 outline-none transition-colors bg-transparent text-gray-900 placeholder-gray-400"
+                                className="w-full px-0 py-3 border-b border-[#e5e7eb] focus:border-[#0a0a0a] outline-none transition-colors bg-transparent text-[#0a0a0a] placeholder:text-[#6b7280]"
                                 required
                                 disabled={loading}
                             />
@@ -72,7 +72,7 @@ export default function LoginPage() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full py-3 bg-gray-900 text-white hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full py-2.5 bg-[#0a0a0a] text-white text-sm font-medium hover:bg-[#374151] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {loading ? 'Logging in...' : 'Login'}
                         </button>

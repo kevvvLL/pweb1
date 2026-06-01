@@ -3,7 +3,7 @@
 import { useRef, useEffect } from 'react';
 import * as THREE from 'three';
 import { EdgesGeometry } from 'three';
-    import { AsciiEffect } from 'three/examples/jsm/Addons.js';
+import { AsciiEffect } from 'three/examples/jsm/Addons.js';
 
 
 const ThreeJSLightPolyhedron: React.FC = () => {
@@ -12,13 +12,12 @@ const ThreeJSLightPolyhedron: React.FC = () => {
     useEffect(() => {
         if (!mountRef.current) return;
 
-        // 定义新的渲染尺寸（视口大小）
-        const width = window.innerWidth * 0.6;  // 使用窗口宽度的60%
-        const height = window.innerHeight * 0.5;  // 使用窗口高度的50%
+        const width = window.innerWidth * 0.6;
+        const height = window.innerHeight * 0.5;
 
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000);
-        camera.position.z = 4;  // 将相机拉近
+        camera.position.z = 4;
 
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(width, height);
@@ -27,18 +26,18 @@ const ThreeJSLightPolyhedron: React.FC = () => {
         const effect = new AsciiEffect(renderer, characters.join(''), { invert: false, resolution: 0.15 });
         effect.setSize(width, height);
         effect.domElement.style.color = 'black';
-        effect.domElement.style.backgroundColor = 'white';
+        effect.domElement.style.backgroundColor = 'transparent';
         mountRef.current.appendChild(effect.domElement);
 
         const cubeGeometry = new THREE.BoxGeometry(2, 2.5, 2);
         const triangleGeometry = new THREE.BufferGeometry();
         const vertices = new Float32Array([
-            -1, -1, 0,  // 左下角
-            1, -1, 0,   // 右下角
-            1, 1, 0,    // 右上角
-            -1, -1, 0,  // 左下角（重复）
-            1, 1, 0,    // 右上角（重复）
-            -1, 1, 0    // 左上角
+            -1, -1, 0,
+            1, -1, 0,
+            1, 1, 0,
+            -1, -1, 0,
+            1, 1, 0,
+            -1, 1, 0
         ]);
 
         triangleGeometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
@@ -50,8 +49,8 @@ const ThreeJSLightPolyhedron: React.FC = () => {
 
         const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
         const mesh = new THREE.Mesh(triangleGeometry, material);
-        
-        scene.add(mesh);    
+
+        scene.add(mesh);
 
         let bounceDirection = 0.1;
         const bounceSpeed = 0.03;
@@ -73,7 +72,6 @@ const ThreeJSLightPolyhedron: React.FC = () => {
         };
         animate();
 
-        // 处理窗口大小变化
         const handleResize = () => {
             const newWidth = window.innerWidth * 0.6;
             const newHeight = window.innerHeight * 0.5;
@@ -85,23 +83,15 @@ const ThreeJSLightPolyhedron: React.FC = () => {
 
         window.addEventListener('resize', handleResize);
 
-        // 清理函数：防止内存泄漏
         return () => {
-            // 取消动画帧
             cancelAnimationFrame(animationFrameId);
-            
-            // 移除事件监听器
             window.removeEventListener('resize', handleResize);
-            
-            // 清理 Three.js 资源
             scene.clear();
             cubeGeometry.dispose();
             triangleGeometry.dispose();
             edgesGeometry.dispose();
             material.dispose();
             renderer.dispose();
-            
-            // 移除 DOM 元素
             if (effect.domElement && effect.domElement.parentNode) {
                 effect.domElement.parentNode.removeChild(effect.domElement);
             }
@@ -109,17 +99,9 @@ const ThreeJSLightPolyhedron: React.FC = () => {
     }, []);
 
     return (
-        <div 
-            ref={mountRef} 
-            style={{ 
-                width: '66%', 
-                height: '60vh', 
-                backgroundColor: 'white', 
-                margin: 'auto',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center'
-            }} 
+        <div
+            ref={mountRef}
+            className="w-full flex justify-center items-center overflow-hidden"
         />
     );
 };

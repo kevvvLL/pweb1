@@ -51,31 +51,31 @@ export default function AdminPage() {
     };
 
     return (
-        <main className="min-h-screen p-6 md:p-12 bg-white">
-            <div className="max-w-4xl mx-auto">
-                <div className="mb-12">
-                    <div className="flex items-center justify-between mb-6">
+        <main className="min-h-screen px-6 py-16 md:py-24 bg-white">
+            <div className="max-w-3xl mx-auto">
+                <div className="mb-16">
+                    <div className="flex items-center justify-between mb-8">
                         <Link
                             href="/blog"
-                            className="text-gray-400 hover:text-gray-600 transition-colors text-sm"
+                            className="text-sm text-[#6b7280] hover:text-[#0a0a0a] transition-colors"
                         >
-                            ← Back to Blog
+                            ← Back
                         </Link>
 
                         <button
                             onClick={handleLogout}
-                            className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
+                            className="text-sm text-[#6b7280] hover:text-[#0a0a0a] transition-colors"
                         >
                             Logout
                         </button>
                     </div>
 
-                    <div className="flex items-center justify-between">
-                        <h1 className="text-4xl font-light text-gray-900">Admin</h1>
+                    <div className="flex items-center justify-between border-b border-[#e5e7eb] pb-8">
+                        <h1 className="text-4xl font-semibold text-[#0a0a0a]">Admin</h1>
 
                         <Link
                             href="/blog/admin/new"
-                            className="px-6 py-2 bg-gray-900 text-white hover:bg-gray-700 transition-colors text-sm"
+                            className="px-4 py-2 bg-[#0a0a0a] text-white text-sm font-medium hover:bg-[#374151] transition-colors"
                         >
                             New Post
                         </Link>
@@ -83,45 +83,45 @@ export default function AdminPage() {
                 </div>
 
                 {loading ? (
-                    <p className="text-gray-400">Loading...</p>
+                    <p className="text-sm text-[#6b7280]">Loading...</p>
                 ) : posts.length === 0 ? (
-                    <div className="text-center py-20">
-                        <p className="text-gray-400 mb-4">No posts yet</p>
+                    <div className="py-20">
+                        <p className="text-[#6b7280] mb-4">No posts yet.</p>
                         <Link
                             href="/blog/admin/new"
-                            className="text-gray-600 hover:text-gray-900 transition-colors"
+                            className="text-sm text-[#6b7280] hover:text-[#0a0a0a] transition-colors"
                         >
                             Create the first one →
                         </Link>
                     </div>
                 ) : (
-                    <div className="space-y-1">
+                    <div className="divide-y divide-[#e5e7eb]">
                         {posts.map((post) => (
                             <div
                                 key={post.slug}
-                                className="flex items-center justify-between py-4 border-b border-gray-100 hover:bg-gray-50 transition-colors group"
+                                className="flex items-center justify-between py-5 group"
                             >
-                                <div className="flex-1">
+                                <div className="flex-1 min-w-0 pr-8">
                                     <Link href={`/blog/${post.slug}`}>
-                                        <h3 className="text-lg font-light text-gray-900 group-hover:text-gray-600 transition-colors">
+                                        <h3 className="text-base font-medium text-[#0a0a0a] group-hover:text-[#6b7280] transition-colors truncate">
                                             {post.title}
                                         </h3>
-                                        <p className="text-sm text-gray-400 mt-1">
+                                        <p className="text-sm text-[#6b7280] mt-0.5">
                                             {new Date(post.date).toLocaleDateString('en-US')}
                                         </p>
                                     </Link>
                                 </div>
 
-                                <div className="flex items-center gap-4">
+                                <div className="flex items-center gap-6 shrink-0">
                                     <Link
                                         href={`/blog/admin/edit/${post.slug}`}
-                                        className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
+                                        className="text-sm text-[#6b7280] hover:text-[#0a0a0a] transition-colors"
                                     >
                                         Edit
                                     </Link>
                                     <button
                                         onClick={() => handleDelete(post.slug)}
-                                        className="text-sm text-red-400 hover:text-red-600 transition-colors"
+                                        className="text-sm text-[#6b7280] hover:text-red-500 transition-colors"
                                     >
                                         Delete
                                     </button>

@@ -72,9 +72,9 @@ export default function EditPostPage({
 
     if (loading) {
         return (
-            <main className="min-h-screen p-6 md:p-12 bg-white">
-                <div className="max-w-4xl mx-auto">
-                    <p className="text-gray-400">Loading...</p>
+            <main className="min-h-screen px-6 py-16 md:py-24 bg-white">
+                <div className="max-w-3xl mx-auto">
+                    <p className="text-sm text-[#6b7280]">Loading...</p>
                 </div>
             </main>
         );
@@ -82,11 +82,11 @@ export default function EditPostPage({
 
     if (error && !title) {
         return (
-            <main className="min-h-screen p-6 md:p-12 bg-white">
-                <div className="max-w-4xl mx-auto">
-                    <p className="text-red-500">{error}</p>
-                    <Link href="/blog/admin" className="text-gray-600 hover:text-gray-900 mt-4 inline-block">
-                        ← Back to Admin
+            <main className="min-h-screen px-6 py-16 md:py-24 bg-white">
+                <div className="max-w-3xl mx-auto">
+                    <p className="text-red-500 text-sm">{error}</p>
+                    <Link href="/blog/admin" className="text-sm text-[#6b7280] hover:text-[#0a0a0a] mt-4 inline-block transition-colors">
+                        ← Back
                     </Link>
                 </div>
             </main>
@@ -94,27 +94,27 @@ export default function EditPostPage({
     }
 
     return (
-        <main className="min-h-screen p-6 md:p-12 bg-white">
-            <div className="max-w-4xl mx-auto">
-                <div className="mb-12">
+        <main className="min-h-screen px-6 py-16 md:py-24 bg-white">
+            <div className="max-w-3xl mx-auto">
+                <div className="mb-16">
                     <Link
                         href="/blog/admin"
-                        className="inline-block mb-6 text-gray-400 hover:text-gray-600 transition-colors text-sm"
+                        className="inline-block mb-8 text-sm text-[#6b7280] hover:text-[#0a0a0a] transition-colors"
                     >
-                        ← Back to Admin
+                        ← Back
                     </Link>
 
-                    <h1 className="text-4xl font-light text-gray-900">Edit Post</h1>
+                    <h1 className="text-4xl font-semibold text-[#0a0a0a] border-b border-[#e5e7eb] pb-8">Edit Post</h1>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-8">
                     <div>
-                        <label className="block text-sm text-gray-500 mb-2">Title</label>
+                        <label className="block text-sm text-[#6b7280] mb-2">Title</label>
                         <input
                             type="text"
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
-                            className="w-full px-4 py-3 border-b border-gray-200 focus:border-gray-900 outline-none transition-colors bg-transparent text-gray-900 text-2xl font-light"
+                            className="w-full px-0 py-3 border-b border-[#e5e7eb] focus:border-[#0a0a0a] outline-none transition-colors bg-transparent text-[#0a0a0a] text-2xl font-medium placeholder:text-[#6b7280]"
                             placeholder="Enter title..."
                             required
                             disabled={saving}
@@ -122,30 +122,30 @@ export default function EditPostPage({
                     </div>
 
                     <div>
-                        <label className="block text-sm text-gray-500 mb-2">Excerpt (optional)</label>
+                        <label className="block text-sm text-[#6b7280] mb-2">Excerpt (optional)</label>
                         <input
                             type="text"
                             value={excerpt}
                             onChange={(e) => setExcerpt(e.target.value)}
-                            className="w-full px-4 py-3 border-b border-gray-200 focus:border-gray-900 outline-none transition-colors bg-transparent text-gray-900"
+                            className="w-full px-0 py-3 border-b border-[#e5e7eb] focus:border-[#0a0a0a] outline-none transition-colors bg-transparent text-[#0a0a0a] placeholder:text-[#6b7280]"
                             placeholder="Short description..."
                             disabled={saving}
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm text-gray-500 mb-2">Content (Markdown supported)</label>
+                        <label className="block text-sm text-[#6b7280] mb-2">Content (Markdown supported)</label>
                         <textarea
                             value={content}
                             onChange={(e) => setContent(e.target.value)}
-                            className="w-full px-4 py-3 border border-gray-200 focus:border-gray-900 outline-none transition-colors bg-transparent text-gray-900 font-mono text-sm leading-relaxed resize-none"
+                            className="w-full px-0 py-3 border-b border-[#e5e7eb] focus:border-[#0a0a0a] outline-none transition-colors bg-transparent text-[#0a0a0a] font-mono text-sm leading-relaxed resize-none placeholder:text-[#6b7280]"
                             placeholder="Start writing..."
                             rows={20}
                             required
                             disabled={saving}
                         />
-                        <p className="text-xs text-gray-400 mt-2">
-                            Markdown supported: # Heading, **bold**, *italic*, [link](url), etc.
+                        <p className="text-xs text-[#6b7280] mt-2">
+                            Markdown supported: # Heading, **bold**, *italic*, [link](url)
                         </p>
                     </div>
 
@@ -157,14 +157,14 @@ export default function EditPostPage({
                         <button
                             type="submit"
                             disabled={saving}
-                            className="px-8 py-3 bg-gray-900 text-white hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="px-6 py-2.5 bg-[#0a0a0a] text-white text-sm font-medium hover:bg-[#374151] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {saving ? 'Saving...' : 'Save'}
                         </button>
 
                         <Link
                             href="/blog/admin"
-                            className="px-8 py-3 border border-gray-300 text-gray-700 hover:border-gray-900 hover:text-gray-900 transition-colors inline-block text-center"
+                            className="px-6 py-2.5 border border-[#e5e7eb] text-sm text-[#6b7280] hover:border-[#0a0a0a] hover:text-[#0a0a0a] transition-colors inline-block text-center"
                         >
                             Cancel
                         </Link>

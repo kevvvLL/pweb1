@@ -4,7 +4,7 @@ import "./globals.css";
 
 import { Roboto } from 'next/font/google'
 
-const roboto = Roboto({ weight: '400', subsets: ['latin'] })
+const roboto = Roboto({ weight: ['400', '500'], subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: "Soupeed",
@@ -18,7 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={roboto.className}>{children}</body>
+      <body className={`${roboto.className} antialiased bg-white text-[#0a0a0a]`}>{children}</body>
     </html>
   );
 }

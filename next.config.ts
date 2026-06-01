@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
 
 export default nextConfig;
 
-// Enable calling `getCloudflareContext()` during `next dev`
-// so KV / env bindings work locally.
-import { initOpenNextCloudflareForDev } from '@opennextjs/cloudflare';
-initOpenNextCloudflareForDev();
+// Cloudflare KV bindings for local dev — requires `wrangler login` + remote KV access.
+// Uncomment when working with blog data locally:
+// import { initOpenNextCloudflareForDev } from '@opennextjs/cloudflare';
+// initOpenNextCloudflareForDev();

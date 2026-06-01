@@ -20,28 +20,28 @@ export default async function BlogPostPage({
     }
 
     return (
-        <main className="min-h-screen p-6 md:p-12 bg-white">
+        <main className="min-h-screen px-6 py-16 md:py-24 bg-white">
             <article className="max-w-3xl mx-auto">
-                <div className="mb-12 flex items-center justify-between">
+                <div className="mb-16 flex items-center justify-between">
                     <Link
                         href="/blog"
-                        className="text-gray-400 hover:text-gray-600 transition-colors text-sm"
+                        className="text-sm text-[#6b7280] hover:text-[#0a0a0a] transition-colors"
                     >
-                        ← Back to Blog
+                        ← Back
                     </Link>
 
                     {authenticated && (
                         <Link
                             href={`/blog/admin/edit/${slug}`}
-                            className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
+                            className="text-sm text-[#6b7280] hover:text-[#0a0a0a] transition-colors"
                         >
                             Edit
                         </Link>
                     )}
                 </div>
 
-                <header className="mb-12 space-y-4">
-                    <time className="text-sm text-gray-400 font-light">
+                <header className="mb-16">
+                    <time className="text-sm text-[#6b7280] block mb-4">
                         {new Date(post.date).toLocaleDateString('en-US', {
                             year: 'numeric',
                             month: 'long',
@@ -49,30 +49,30 @@ export default async function BlogPostPage({
                         })}
                     </time>
 
-                    <h1 className="text-4xl md:text-5xl font-light text-gray-900 leading-tight">
+                    <h1 className="text-4xl font-semibold text-[#0a0a0a] leading-tight">
                         {post.title}
                     </h1>
                 </header>
 
-                <div className="prose prose-lg prose-gray max-w-none">
+                <div className="max-w-none">
                     <ReactMarkdown
                         components={{
                             h1: ({ children }) => (
-                                <h1 className="text-3xl font-light text-gray-900 mt-12 mb-6">{children}</h1>
+                                <h1 className="text-2xl font-semibold text-[#0a0a0a] mt-12 mb-6">{children}</h1>
                             ),
                             h2: ({ children }) => (
-                                <h2 className="text-2xl font-light text-gray-900 mt-10 mb-4">{children}</h2>
+                                <h2 className="text-xl font-medium text-[#0a0a0a] mt-10 mb-4">{children}</h2>
                             ),
                             h3: ({ children }) => (
-                                <h3 className="text-xl font-light text-gray-900 mt-8 mb-3">{children}</h3>
+                                <h3 className="text-base font-medium text-[#0a0a0a] mt-8 mb-3">{children}</h3>
                             ),
                             p: ({ children }) => (
-                                <p className="text-gray-700 leading-relaxed mb-6">{children}</p>
+                                <p className="text-base text-[#374151] leading-relaxed mb-6">{children}</p>
                             ),
                             a: ({ href, children }) => (
                                 <a
                                     href={href}
-                                    className="text-gray-900 underline hover:text-gray-600 transition-colors"
+                                    className="text-[#0a0a0a] underline underline-offset-2 hover:text-[#6b7280] transition-colors"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
@@ -80,18 +80,18 @@ export default async function BlogPostPage({
                                 </a>
                             ),
                             ul: ({ children }) => (
-                                <ul className="list-disc list-inside space-y-2 mb-6 text-gray-700">{children}</ul>
+                                <ul className="list-disc list-inside space-y-2 mb-6 text-[#374151]">{children}</ul>
                             ),
                             ol: ({ children }) => (
-                                <ol className="list-decimal list-inside space-y-2 mb-6 text-gray-700">{children}</ol>
+                                <ol className="list-decimal list-inside space-y-2 mb-6 text-[#374151]">{children}</ol>
                             ),
                             blockquote: ({ children }) => (
-                                <blockquote className="border-l-2 border-gray-300 pl-6 italic text-gray-600 my-6">
+                                <blockquote className="border-l-2 border-[#e5e7eb] pl-6 italic text-[#6b7280] my-8">
                                     {children}
                                 </blockquote>
                             ),
                             code: ({ children }) => (
-                                <code className="bg-gray-100 px-2 py-1 rounded text-sm font-mono text-gray-800">
+                                <code className="bg-[#fafafa] border border-[#e5e7eb] px-1.5 py-0.5 text-sm font-mono text-[#0a0a0a]">
                                     {children}
                                 </code>
                             ),

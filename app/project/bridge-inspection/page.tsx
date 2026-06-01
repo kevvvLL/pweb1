@@ -1,15 +1,26 @@
+import Link from 'next/link';
+
 export default function BridgeInspectionPage() {
     return (
-        <main className="flex flex-col min-h-screen p-6">
-            <div className="flex-grow max-w-4xl mx-auto">
-                <h1 className="font-sans text-4xl font-bold text-white bg-gray-800 px-4 py-2 rounded inline-block mb-6">
-                    Bridge Inspection Pipeline
-                </h1>
+        <main className="min-h-screen flex flex-col px-6 py-16 md:py-24">
+            <div className="flex-grow max-w-3xl mx-auto w-full">
+                <div className="mb-16">
+                    <Link
+                        href="/project"
+                        className="inline-block mb-8 text-sm text-[#6b7280] hover:text-[#0a0a0a] transition-colors"
+                    >
+                        ← Projects
+                    </Link>
 
-                <div className="space-y-6">
+                    <h1 className="text-4xl font-semibold text-[#0a0a0a] border-b border-[#e5e7eb] pb-8">
+                        Bridge Inspection Pipeline
+                    </h1>
+                </div>
+
+                <div className="space-y-12">
                     <section>
-                        <h2 className="text-2xl font-semibold mb-3">About</h2>
-                        <p className="text-gray-700 leading-relaxed">
+                        <h2 className="text-base font-medium text-[#6b7280] uppercase tracking-widest mb-4">About</h2>
+                        <p className="text-base text-[#374151] leading-relaxed">
                             A Python pipeline that takes an element-organized bridge inspection PDF
                             (the standard FHWA/AASHTO format) and reorganizes it into a station-organized
                             field report — one page per walking stop along the bridge, with every relevant
@@ -18,8 +29,8 @@ export default function BridgeInspectionPage() {
                     </section>
 
                     <section>
-                        <h2 className="text-2xl font-semibold mb-3">The Problem It Solves</h2>
-                        <p className="text-gray-700 leading-relaxed">
+                        <h2 className="text-base font-medium text-[#6b7280] uppercase tracking-widest mb-4">The Problem It Solves</h2>
+                        <p className="text-base text-[#374151] leading-relaxed">
                             The default element-organized format is great for reporting but terrible for
                             field inspection. Standing at Pier 2, an inspector shouldn&apos;t have to flip
                             between four separate element sections to see everything about it. This tool
@@ -28,20 +39,20 @@ export default function BridgeInspectionPage() {
                     </section>
 
                     <section>
-                        <h2 className="text-2xl font-semibold mb-3">Features</h2>
-                        <ul className="list-disc list-inside space-y-2 text-gray-700">
-                            <li>🗂️ Reorganizes element-based PDFs into one page per physical station</li>
-                            <li>🎨 Color-coded condition state highlighting (green → red)</li>
-                            <li>✍️ Blank field notes lines for handwriting on-site</li>
-                            <li>🧠 Interactive browser UI to classify unknown elements</li>
-                            <li>📚 Learns from your classifications over time via config.yaml</li>
-                            <li>🔒 Fully local — no data leaves your machine</li>
+                        <h2 className="text-base font-medium text-[#6b7280] uppercase tracking-widest mb-4">Features</h2>
+                        <ul className="space-y-3 text-base text-[#374151]">
+                            <li>Reorganizes element-based PDFs into one page per physical station</li>
+                            <li>Color-coded condition state highlighting (green → red)</li>
+                            <li>Blank field notes lines for handwriting on-site</li>
+                            <li>Interactive browser UI to classify unknown elements</li>
+                            <li>Learns from your classifications over time via config.yaml</li>
+                            <li>Fully local — no data leaves your machine</li>
                         </ul>
                     </section>
 
                     <section>
-                        <h2 className="text-2xl font-semibold mb-3">How It Works</h2>
-                        <div className="bg-gray-50 rounded-lg p-4 space-y-2 text-gray-700 text-sm font-mono">
+                        <h2 className="text-base font-medium text-[#6b7280] uppercase tracking-widest mb-4">How It Works</h2>
+                        <div className="bg-[#fafafa] border border-[#e5e7eb] p-6 space-y-2 text-sm font-mono text-[#374151]">
                             <p>① extract.py — PDF → element data (JSON)</p>
                             <p>② classify.py — 4-layer classification cascade</p>
                             <p>③ review_server.py — browser UI for uncertain elements</p>
@@ -51,8 +62,8 @@ export default function BridgeInspectionPage() {
                     </section>
 
                     <section>
-                        <h2 className="text-2xl font-semibold mb-3">Tech Stack</h2>
-                        <ul className="list-disc list-inside space-y-2 text-gray-700">
+                        <h2 className="text-base font-medium text-[#6b7280] uppercase tracking-widest mb-4">Tech Stack</h2>
+                        <ul className="space-y-3 text-base text-[#374151]">
                             <li>Python 3.10+</li>
                             <li>pdfplumber — position-aware PDF table extraction</li>
                             <li>reportlab — PDF generation</li>
@@ -62,39 +73,30 @@ export default function BridgeInspectionPage() {
                     </section>
 
                     <section>
-                        <h2 className="text-2xl font-semibold mb-3">Quick Start</h2>
-                        <div className="bg-gray-900 text-green-400 rounded-lg p-4 text-sm font-mono space-y-1">
+                        <h2 className="text-base font-medium text-[#6b7280] uppercase tracking-widest mb-4">Quick Start</h2>
+                        <div className="bg-[#0a0a0a] text-[#e5e7eb] p-6 text-sm font-mono space-y-1">
                             <p>pip install -r requirements.txt</p>
                             <p>python pipeline.py</p>
-                            <p className="text-gray-500"># or on your own report:</p>
+                            <p className="text-[#6b7280]"># or on your own report:</p>
                             <p>python pipeline.py your_report.pdf field_report.pdf</p>
                         </div>
                     </section>
 
-                    <section className="mt-8">
+                    <section>
                         <a
                             href="https://github.com/kevvvLL/bridge-inspection-field-report-pipeline"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-block bg-gray-800 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors duration-200 font-medium"
+                            className="inline-block bg-[#0a0a0a] text-white px-6 py-3 text-sm font-medium hover:bg-[#374151] transition-colors"
                         >
                             View on GitHub →
-                        </a>
-                    </section>
-
-                    <section className="mt-8 pt-6 border-t border-gray-200">
-                        <a
-                            href="/project"
-                            className="text-gray-600 hover:text-gray-800 transition-colors"
-                        >
-                            ← Back to Projects
                         </a>
                     </section>
                 </div>
             </div>
 
-            <footer className="w-full mt-8">
-                <p className="text-gray-600 text-center">info@soupeed.com</p>
+            <footer className="max-w-3xl mx-auto w-full mt-24 border-t border-[#e5e7eb] pt-8">
+                <p className="text-sm text-[#6b7280]">info@soupeed.com</p>
             </footer>
         </main>
     );
